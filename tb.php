@@ -12,7 +12,8 @@ require 'cek.php'
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Iventaris Barang</title>
+    <title>Tutup Bon | UDAYA</title>
+    <link rel="shortcut icon" href="assets/img/head/logo-udaya.png" />
     <link href="css/styles.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
@@ -20,7 +21,7 @@ require 'cek.php'
 
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand" href="index.php">BON Records</a>
+        <a class="navbar-brand" href="index.php"><img style="width: 200px; margin-left:-15px; margin-top:6px;" src="assets/img/head/udayaforheader.PNG" alt=""> </a>
         <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
     </nav>
     <div id="layoutSidenav">
@@ -28,21 +29,36 @@ require 'cek.php'
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Core</div>
+                        <?php
+                        $tampilannama = $_SESSION{
+                            'nama'};
+                        $tampilangambar = $_SESSION{
+                            'image'};
+                        ?>
+                        <div>
+                            <h3 class="sb-sidenav-menu-heading" style="margin-left: 15px;">Welcome <?= $tampilannama; ?></h3>
+                            <div style="width: 80px; border-radius:50%; height:80px; margin-left:50px; background: url('<?= "assets/img/user/$tampilangambar"; ?>') center center; background-size:80px; background-repeat:no-repeat;"></div>
+                        </div>
+
+                        <br />
                         <a class="nav-link" href="index.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
+                        <a class="nav-link" href="kb.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
                             Kas Bon
                         </a>
                         <a class="nav-link" href="tb.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
                             Tutup Bon
                         </a>
                         <a class="nav-link" href="tbl.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
                             Tutup Bon Langsung
                         </a>
                         <a class="nav-link" href="logout.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
                             Logout
                         </a>
                     </div>
@@ -79,6 +95,11 @@ require 'cek.php'
                                     </thead>
                                     <tbody>
                                         <?php
+                                        function Rupiah($angka)
+                                        {
+                                            $hasil = "Rp " . number_format($angka, 2, ',', '.');
+                                            return $hasil;
+                                        }
                                         $tampilantb = mysqli_query($conn, "select * from tb left join login on tb.id_login=login.id_login left join kb on tb.id_kb=kb.id_kb left join company on kb.id_company=company.id_company");
                                         $no = 1;
                                         while ($data = mysqli_fetch_array($tampilantb)) {
@@ -100,7 +121,7 @@ require 'cek.php'
                                                 <td><?= $nama; ?></td>
                                                 <td><?= $deskripsi; ?></td>
                                                 <td><?= $company ?></td>
-                                                <td><?= "Rp " . $nominal; ?></td>
+                                                <td><?= Rupiah($nominal); ?></td>
                                                 <td><?= $transfer; ?></td>
                                                 <td><?= $keterangan_tb; ?></td>
                                                 <td><?= $status_terima; ?></td>
@@ -122,28 +143,14 @@ require 'cek.php'
                                                         </div>
                                                         <form method="POST">
                                                             <div class="modal-body">
-                                                                <select name="namatb" class="form-control">
-                                                                    <option value="<?= $idnama; ?>" selected><?= $nama; ?></option>
-                                                                    <?php
-                                                                    $tampilannama = mysqli_query($conn, "select * from login");
-                                                                    while ($fetcharray = mysqli_fetch_array($tampilannama)) {
-                                                                        $name = $fetcharray['nama'];
-                                                                        $id_loginnya = $fetcharray['id_login'];
-                                                                    ?>
-                                                                        <option value="<?= $id_loginnya; ?>"><?= $name; ?></option>
-                                                                    <?php
-                                                                    }
-                                                                    ?>
-                                                                </select>
-                                                                <br />
                                                                 <select name="pilihkb" class="form-control" required>
-                                                                    <option value="<?= $idkb; ?>" selected><?= $tanggal; ?> <?= $deskripsi; ?></option>
+                                                                    <option value="<?= $idkb; ?>" selected><?= $idkb; ?> <?= $tanggal; ?> <?= $deskripsi; ?> <?= $nominal; ?></option>
                                                                     <?php
                                                                     $det = mysqli_query($conn, "select * from kb");
                                                                     while ($d = mysqli_fetch_array($det)) {
 
                                                                     ?>
-                                                                        <option value="<?php echo $d['id_kb'] ?>"><?php echo $d['tanggal_kb'] ?> <?php echo $d['id_login'] ?> <?php echo $d['deskripsi_kb'] ?>, <?php echo $d['id_company'] ?> <?php echo $d['nominal_kb'] ?> <?php echo $d['transfer_kb'] ?></option>
+                                                                        <option value="<?php echo $d['id_kb'] ?>"><?php echo $d['id_kb'] ?> <?php echo $d['tanggal_kb'] ?> <?php echo $d['deskripsi_kb'] ?>, <?php echo $d['nominal_kb'] ?></option>
                                                                     <?php
                                                                     }
                                                                     ?>
@@ -202,11 +209,12 @@ require 'cek.php'
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid">
                     <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Your Website 2020</div>
+                        <div class="text-muted">Copyright &copy; IT Support Palem | 2021</div>
                         <div>
-                            <a href="#">Privacy Policy</a>
+                            <a>Develop by</a>
+                            <a style="text-decoration:none;" href="https://www.anandanesia.com/" target="_blank">Ilham Tegar</a>
                             &middot;
-                            <a href="#">Terms &amp; Conditions</a>
+                            <a style="text-decoration:none;" href="#">Admathir</a>
                         </div>
                     </div>
                 </div>
@@ -236,18 +244,14 @@ require 'cek.php'
             </div>
             <form method="POST">
                 <div class="modal-body">
+                    <?php
+                    $tampilannama = $_SESSION{
+                        'nama'};
+                    $idloginnya = $_SESSION{
+                        'id_login'};
+                    ?>
                     <select name="namatb" class="form-control">
-                        <option selected>pilih user</option>
-                        <?php
-                        $tampilannama = mysqli_query($conn, "select * from login");
-                        while ($fetcharray = mysqli_fetch_array($tampilannama)) {
-                            $nama = $fetcharray['nama'];
-                            $id_loginnya = $fetcharray['id_login'];
-                        ?>
-                            <option value="<?= $id_loginnya; ?>"><?= $nama; ?></option>
-                        <?php
-                        }
-                        ?>
+                        <option value="<?= $idloginnya; ?>" selected><?= $tampilannama; ?></option>
                     </select>
                     <br />
                     <select name="pilihkb" class="form-control" required>
@@ -256,7 +260,7 @@ require 'cek.php'
                         $det = mysqli_query($conn, "select * from kb");
                         while ($d = mysqli_fetch_array($det)) {
                         ?>
-                            <option value="<?php echo $d['id_kb'] ?>"><?php echo $d['tanggal_kb'] ?> <?php echo $d['id_login'] ?> <?php echo $d['deskripsi_kb'] ?>, <?php echo $d['id_company'] ?> <?php echo $d['nominal_kb'] ?> <?php echo $d['transfer_kb'] ?></option>
+                            <option value="<?php echo $d['id_kb'] ?>"><?php echo $d['id_kb'] ?> <?php echo $d['tanggal_kb'] ?> <?php echo $d['deskripsi_kb'] ?>, <?php echo $d['nominal_kb'] ?></option>
                         <?php
                         }
                         ?>

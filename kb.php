@@ -12,7 +12,7 @@ require 'cek.php'
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Tutup Bon Langsung | UDAYA </title>
+    <title>Kas Bon | UDAYA</title>
     <link rel="shortcut icon" href="assets/img/head/logo-udaya.png" />
     <link href="css/styles.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
@@ -68,12 +68,12 @@ require 'cek.php'
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid">
-                    <h1 class="mt-4">Tutup Bon Langsung</h1>
+                    <h1 class="mt-4">Kas Bon</h1>
                     <div class="card mb-4">
                         <div class="card-header">
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tblmodal">
-                                Tambah TBL
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#kbmodal">
+                                Tambah KB
                             </button>
                         </div>
                         <div class="card-body">
@@ -101,30 +101,30 @@ require 'cek.php'
                                             $hasil = "Rp " . number_format($angka, 2, ',', '.');
                                             return $hasil;
                                         }
-                                        $tampilantbl = mysqli_query($conn, "select * from tbl left join login on tbl.id_login=login.id_login left join company on tbl.id_company=company.id_company");
-                                        $no = 1;
-                                        while ($data = mysqli_fetch_array($tampilantbl)) {
-                                            $idtbl = $data['id_tbl'];
-                                            $idlogin = $data['id_login'];
-                                            $idcompany = $data['id_company'];
-                                            $tanggal = $data['tanggal_tbl'];
+                                        $tampilankb = mysqli_query($conn, "select kb.*, login.nama, company.company_name from kb left join login on kb.id_login=login.id_login left join company on kb.id_company=company.id_company");
+                                        while ($data = mysqli_fetch_array($tampilankb)) {
+                                            $id_kb = $data['id_kb'];
+                                            $tanggal = $data['tanggal_kb'];
                                             $nama = $data['nama'];
-                                            $deskripsi = $data['deskripsi_tbl'];
+                                            $deskripsi = $data['deskripsi_kb'];
                                             $company = $data['company_name'];
-                                            $nominal = $data['nominal_tbl'];
-                                            $transfer = $data['transfer_tbl'];
-                                            $status_terima = $data['status_trmtbl'];
-                                            $status_transfer = $data['status_trftbl'];
-                                            $gambar = $data['bukti_tftbl'];
+                                            $idcompany = $data['id_company'];
+                                            $id_login = $data['id_login'];
+                                            $nominal = $data['nominal_kb'];
+                                            $transfer = $data['transfer_kb'];
+                                            $status_terima = $data['status_terima'];
+                                            $status_transfer = $data['status_tfkb'];
+                                            $gambar = $data['bukti_tfkb'];
                                             if ($gambar == null) {
                                                 $img = 'tidak ada lampiran';
                                             } else {
-                                                $img = '<img style="width:50px;" src="finance/assets/bukti_tftbl/' . $gambar . '" >';
+                                                $img = '<img style="width:50px;" src="finance/assets/bukti_tfkb/' . $gambar . '" >';
                                             }
+
 
                                         ?>
                                             <tr>
-                                                <td><?= $idtbl; ?></td>
+                                                <td><?= $id_kb; ?></td>
                                                 <td><?= $tanggal; ?></td>
                                                 <td><?= $nama; ?></td>
                                                 <td><?= $deskripsi; ?></td>
@@ -135,58 +135,58 @@ require 'cek.php'
                                                 <td><?= $status_transfer; ?></td>
                                                 <td><?= $img; ?></td>
                                                 <td>
-                                                    <button style="margin: 2px;" type="button" class="btn btn-warning" data-toggle="modal" data-target="#updatetbl<?= $idtbl; ?>">update</button>
-                                                    <button style="margin: 2px;" type="button" class="btn btn-danger" data-toggle="modal" data-target="#deletetbl<?= $idtbl; ?>">delete</button>
+                                                    <button style="margin: 2px;" type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalupdate<?= $id_kb; ?>">update</button>
+                                                    <button style="margin: 2px;" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modaldelete<?= $id_kb; ?>">delete</button>
                                                 </td>
                                             </tr>
-
-                                            <!-- update modal tbl -->
-                                            <div class="modal fade" id="updatetbl<?= $idtbl; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <!-- update modal -->
+                                            <div class="modal fade" id="modalupdate<?= $id_kb; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Update TBL</h5>
+                                                            <h5 class="modal-title" id="exampleModalLabel">Update KB</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
                                                         <form method="POST">
                                                             <div class="modal-body">
-                                                                <select name="companyupdatetbl" class="form-control">
+                                                                <select name="company" class="form-control">
                                                                     <option selected value="<?= $idcompany; ?>"><?= $company; ?></option>
                                                                     <?php
-                                                                    $tampilancompanytbl = mysqli_query($conn, "select * from company");
-                                                                    while ($fetcharray = mysqli_fetch_array($tampilancompanytbl)) {
-                                                                        $companyname = $fetcharray['company_name'];
-                                                                        $id_companynya = $fetcharray['id_company'];
+                                                                    $tampilancompanyupdate = mysqli_query($conn, "select * from company");
+                                                                    while ($fetcharray = mysqli_fetch_array($tampilancompanyupdate)) {
+                                                                        $company_list = $fetcharray['company_name'];
+                                                                        $id_company_list = $fetcharray['id_company'];
                                                                     ?>
-                                                                        <option value="<?= $id_companynya; ?>"><?= $companyname; ?></option>
+                                                                        <option value="<?= $id_company_list; ?>"><?= $company_list; ?></option>
+
                                                                     <?php
                                                                     }
                                                                     ?>
                                                                 </select>
                                                                 <br />
-                                                                <input type="number" name="nominalupdatetbl" value="<?= $nominal; ?>" class="form-control" required>
+                                                                <input type="number" name="nominal" value="<?= $nominal; ?>" class="form-control" required>
                                                                 <br />
-                                                                <input type="text" name="transfertoupdatetbl" value="<?= $transfer; ?>" class="form-control" required>
+                                                                <input type="text" name="transferto" value="<?= $transfer; ?>" class="form-control" required>
                                                                 <br />
-                                                                <textarea type="text" class="form-control" name="deskripsiupdatetbl" rows="3" required><?= $deskripsi; ?></textarea>
-                                                                <input type="hidden" name="idtbl" value="<?= $idtbl; ?>">
+                                                                <textarea type="text" class="form-control" name="deskripsi" rows="3" required><?= $deskripsi; ?></textarea>
+                                                                <input type="hidden" name="idkb" value="<?= $id_kb; ?>">
                                                                 <br />
-                                                                <button type="submit" name="updatetbl" class="btn btn-warning">Update</button>
+                                                                <button type="submit" name="updatekb" class="btn btn-warning">Update</button>
                                                             </div>
                                                         </form>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- update modal tbl -->
+                                            <!-- update modal -->
 
-                                            <!-- delete modal tb -->
-                                            <div class="modal fade" id="deletetbl<?= $idtbl; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <!-- delete modal -->
+                                            <div class="modal fade" id="modaldelete<?= $id_kb; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Hapus TBL</h5>
+                                                            <h5 class="modal-title" id="exampleModalLabel">Hapus KB</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
@@ -197,17 +197,17 @@ require 'cek.php'
                                                                     <textarea type="text" class="form-control" name="deskripsi" rows="3" placeholder="<?= $deskripsi; ?>"></textarea>
                                                                 </fieldset>
                                                                 <br />
-                                                                Apakah anda ingin menghapus TBL ini?
+                                                                Apakah anda ingin menghapus KB ini?
                                                                 <br />
                                                                 <br />
-                                                                <input type="hidden" name="idtbl" value="<?= $idtbl; ?>">
-                                                                <button type="submit" name="modaldeletetbl" class="btn btn-danger">Hapus</button>
+                                                                <input type="hidden" name="idkb" value="<?= $id_kb; ?>">
+                                                                <button type="submit" name="deletekb" class="btn btn-danger">Hapus</button>
                                                             </div>
                                                         </form>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- delete modal tb -->
+                                            <!-- delete modal -->
 
                                         <?php
                                         };
@@ -248,11 +248,11 @@ require 'cek.php'
 </body>
 
 <!-- Modal -->
-<div class="modal fade" id="tblmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="kbmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah TBL</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah KB</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -265,11 +265,11 @@ require 'cek.php'
                     $idloginnya = $_SESSION{
                         'id_login'};
                     ?>
-                    <select name="namatbl" class="form-control">
+                    <select name="nama" class="form-control">
                         <option value="<?= $idloginnya; ?>" selected><?= $tampilannama; ?></option>
                     </select>
                     <br />
-                    <select name="companytbl" class="form-control">
+                    <select name="company" class="form-control">
                         <option selected>pilih company</option>
                         <?php
                         $tampilancompany = mysqli_query($conn, "select * from company");
@@ -283,13 +283,13 @@ require 'cek.php'
                         ?>
                     </select>
                     <br />
-                    <input type="number" name="nominaltbl" placeholder="nominal" class="form-control" required>
+                    <input type="number" name="nominal" placeholder="nominal" class="form-control" required>
                     <br />
-                    <input type="text" name="transfertotbl" placeholder="transfer to" class="form-control" required>
+                    <input type="text" name="transferto" placeholder="transfer to" class="form-control" required>
                     <br />
-                    <textarea type="text" class="form-control" name="deskripsitbl" rows="3" placeholder="deskripsi" required></textarea>
+                    <textarea type="text" class="form-control" name="deskripsi" rows="3" placeholder="deskripsi" required></textarea>
                     <br />
-                    <button type="submit" name="savetbl" class="btn btn-primary">Tambah</button>
+                    <button type="submit" name="savekb" class="btn btn-primary">Tambah</button>
                 </div>
             </form>
         </div>
