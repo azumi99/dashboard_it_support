@@ -170,8 +170,16 @@ require 'ceklog.php'
                                                 <td><?= $status_transfer; ?></td>
                                                 <td><?= $img; ?></td>
                                                 <td>
-                                                    <button style="margin: 2px;" type="button" class="btn btn-success" data-toggle="modal" data-target="#tblterima<?= $idtbl; ?>" id="Btn" onclick="myFunction()"><i class="fas fa-bookmark"></i></button>
-                                                    <button style="margin: 2px;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalbuktitftbl<?= $idtbl; ?>"><i class="fas fa-receipt"></i></button>
+                                                    <?php
+                                                    if ($status_terima == "belum") {
+                                                        echo '<button style="margin: 2px;" type="button" class="btn btn-success" data-toggle="modal" data-target="#tblterima' . $idtbl . '" id="Btn" onclick="myFunction()"><i class="fas fa-bookmark"></i></button>';
+                                                    } else {
+                                                    }
+                                                    if ($status_transfer == "belum") {
+                                                        echo ' <button style="margin: 2px;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalbuktitftbl' . $idtbl . '"><i class="fas fa-receipt"></i></button>';
+                                                    } else {
+                                                    }
+                                                    ?>
                                                 </td>
                                             </tr>
                                             <!-- update modal -->

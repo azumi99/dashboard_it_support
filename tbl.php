@@ -317,12 +317,13 @@ require 'cek.php'
                     $idloginnya = $_SESSION{
                         'id_login'};
                     ?>
+                    <label for="">Nama</label>
                     <select name="namatbl" class="form-control">
                         <option value="<?= $idloginnya; ?>" selected><?= $tampilannama; ?></option>
                     </select>
-                    <br />
+                    <label for="">Company</label>
                     <select name="companytbl" class="form-control">
-                        <option selected>pilih company</option>
+                        <option selected></option>
                         <?php
                         $tampilancompany = mysqli_query($conn, "select * from company");
                         while ($fetcharray = mysqli_fetch_array($tampilancompany)) {
@@ -334,12 +335,12 @@ require 'cek.php'
                         }
                         ?>
                     </select>
-                    <br />
-                    <input type="number" name="nominaltbl" placeholder="nominal" class="form-control" required>
-                    <br />
-                    <input type="text" name="transfertotbl" placeholder="transfer to" class="form-control" required>
-                    <br />
-                    <textarea type="text" class="form-control" name="deskripsitbl" rows="3" placeholder="deskripsi" required></textarea>
+                    <label for="">Nominal</label>
+                    <input type="number" name="nominaltbl" class="form-control" required>
+                    <label for="">Transfer To</label>
+                    <input type="text" name="transfertotbl" class="form-control" required>
+                    <label for="">Keterangan</label>
+                    <textarea type="text" class="form-control" rows="3" name="deskripsitbl" required></textarea>
                     <br />
                     <button type="submit" name="savetbl" class="btn btn-primary">Tambah</button>
                 </div>

@@ -100,7 +100,6 @@ require 'cek.php'
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="card bg-light text-info border-0 shadow p-3 mb-5 rounded mb-4">
-
                                         <div class="card-body">
                                             <h1><i class="far fa-bookmark"></i> <b class="float-right"><?= $hitungkb1; ?></b></h1>
                                         </div>
@@ -469,9 +468,9 @@ require 'cek.php'
                     <div class="card border-0 shadow p-3 mb-2 rounded mb-2 ">
                         <div class="card-header border-0 shadow p-3 mb-2 rounded mb-2">
                             <i class="fas fa-laptop-house"></i> Add Company
-                            <a href="#addcompany" data-toggle="collapse" class="float-right"><i class="fas fa-chevron-down"></i></a>
+                            <a href="#addcompany1" data-toggle="collapse" class="float-right"><i class="fas fa-chevron-down"></i></a>
                         </div>
-                        <div class="card-body collapse" id="addcompany">
+                        <div class="card-body collapse" id="addcompany1">
                             <div class="row">
                                 <div class="col-md-6 mb-6">
                                     <div class="card">

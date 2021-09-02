@@ -87,7 +87,7 @@ require 'cek.php'
                                         <td><b style="margin-left: 15px;">Month</b></td>
                                         <td>
                                             <select name="date" id="" class="form-control">
-                                                <option value="0"></option>
+                                                <option selected value="<?= date("m"); ?>"><?= date("m"); ?></option>
                                                 <option value="01">Januari</option>
                                                 <option value="02">Febuari</option>
                                                 <option value="03">Maret</option>

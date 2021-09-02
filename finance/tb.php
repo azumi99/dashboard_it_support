@@ -157,7 +157,12 @@ require 'ceklog.php'
                                                 <td><?= $keterangan_tb; ?></td>
                                                 <td><?= $status_terima; ?></td>
                                                 <td>
-                                                    <button style="margin: 2px;" type="button" class="btn btn-success" data-toggle="modal" data-target="#terimatb<?= $idtb; ?>"><i class="fas fa-bookmark"></i></button>
+                                                    <?php
+                                                    if ($status_terima == "belum") {
+                                                        echo '<button style="margin: 2px;" type="button" class="btn btn-success" data-toggle="modal" data-target="#terimatb' . $idtb . '"><i class="fas fa-bookmark"></i></button>';
+                                                    } else {
+                                                    }
+                                                    ?>
                                                 </td>
                                             </tr>
 

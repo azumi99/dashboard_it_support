@@ -16,10 +16,7 @@ body {
   text-decoration: none;
   color: #17a2b8;
 }
-.card-title a:hover {
-  text-decoration: none;
-  color: #17a2b8;
-}
+
 .login-card {
   border: 0;
   border-radius: 27.5px;
