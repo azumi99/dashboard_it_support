@@ -17,6 +17,7 @@ require 'ceklog.php'
     <link href="css/styles.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
 </head>
 
 
@@ -80,25 +81,14 @@ require 'ceklog.php'
                                 <table class="float-right">
                                     <tr>
 
-                                        <td><b style="margin-left: 15px;">Month</b></td>
+                                        <td><b style="margin-left: 15px;">Filter</b></td>
                                         <td>
-                                            <select name="date" id="" class="form-control">
-                                                <option value="0"></option>
-                                                <option value="01">Januari</option>
-                                                <option value="02">Febuari</option>
-                                                <option value="03">Maret</option>
-                                                <option value="04">April</option>
-                                                <option value="05">Mei</option>
-                                                <option value="06">Juni</option>
-                                                <option value="07">July</option>
-                                                <option value="08">Agustus</option>
-                                                <option value="09">September</option>
-                                                <option value="10">Oktober</option>
-                                                <option value="11">November</option>
-                                                <option value="12">Desember</option>
-                                            </select>
+                                            <input type="text" value="<?= date("m-Y"); ?>" class="form-control" name="date" id="datepicker" autocomplete="off">
                                         </td>
                                         <td><button type="submit" name="monthsubmit" class="btn btn-info ">Go</button></td>
+                                        <td>
+                                            <a href="" class="btn btn-primary"><i class="fas fa-sync-alt"></i></a>
+                                        </td>
                                     </tr>
                                 </table>
                             </form>
@@ -135,11 +125,12 @@ require 'ceklog.php'
 
                                         if (isset($_POST['monthsubmit'])) {
                                             $for_date = mysqli_real_escape_string($conn, $_POST['date']);
+                                            $indate = explode("-", $for_date);
                                             $tampilankb = mysqli_query($conn, "select kb.*, 
                                             login.nama, company.company_name 
                                             from kb left join login on kb.id_login=login.id_login 
                                             left join company on kb.id_company=company.id_company 
-                                            where kb.id_company='$sesion' and month(tanggal_kb)=$for_date order by tanggal_kb");
+                                            where kb.id_company='$sesion' and month(tanggal_kb)=$indate[0] and year(tanggal_kb)=$indate[1] order by tanggal_kb");
                                         } else {
                                             $tampilankb = mysqli_query($conn, "select kb.*, 
                                             login.nama, company.company_name 
@@ -284,6 +275,7 @@ require 'ceklog.php'
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
     <script src="assets/demo/datatables-demo.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#orderdesc').DataTable({
@@ -297,6 +289,13 @@ require 'ceklog.php'
         var loading = document.getElementById('loading');
         window.addEventListener('load', function() {
             loading.style.display = "none";
+        });
+    </script>
+    <script>
+        $("#datepicker").datepicker({
+            format: "mm-yyyy",
+            startView: "months",
+            minViewMode: "months"
         });
     </script>
 </body>
